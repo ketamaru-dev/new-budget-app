@@ -2,8 +2,8 @@ from . import create, category, create
 import json
 
 def show(budget: list):  #Выводим все категории и траты
-    print('Категория'.rjust(30) + 'Лимит по категории'.rjust(30) + 'Траты'.rjust(30))
-    print('-' * 90)
+    print('Категория'.rjust(30) + 'Лимит по категории'.rjust(30) + 'Траты'.rjust(30) + 'Дата'.rjust(30))
+    print('-' * 120)
     ctgs = dict(enumerate(budget))
     for key in ctgs:
         ctg = ctgs[key].pack_to_save()
@@ -11,9 +11,10 @@ def show(budget: list):  #Выводим все категории и траты
         if len(ctg['transactions']) == 0:
             print()
         for date in ctg['transactions']:
-            print(str(ctg['transactions'][date]).rjust(30))
+            print(str(ctg['transactions'][date]).rjust(30) + str(date).rjust(30))
             print(' ' * 60, end='')
-        print('-' * 90)
+        
+        print()
         
 def rm_transaction(budget: list):
     ctgs = dict(enumerate(budget))
@@ -63,7 +64,16 @@ def chose_tr_act(budget: list):
         print('Ошибка повторите еще раз')
 
 def change_limit(budget:list):
-    pass
+    ctgs = dict(enumerate(budget))
+    print('Выберите категорию:')
+    for key in ctgs:
+        print(f'{key + 1} - {ctgs[key].get_name_ctg()}')
+    
+    cat = int(input('>'))
+    new_limit = float(input('Введите новый лимит категории\n>'))
+    ctgs[cat - 1].change_limit(new_limit)
+    print("Новый лимит установлен!")
+
 
 def exit(budget:list):
     create.load_file(create.pack_to_json(budget))

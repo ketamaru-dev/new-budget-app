@@ -24,7 +24,7 @@ class Category:
 
     def add_transaction(self):  #the method is add new transaction to category
             summ = float(input('Enter the amount of transaction: '))
-            date = input('Enter the date in format YEAR:MONTH:DAT (if empty, created currently date): ')
+            date = input('Enter the date in format YEAR-MONTH-DAT (if empty, created currently date): ')
             if date == '':
                 from datetime import datetime
                 date = datetime.now().strftime("%Y-%m-%d")
