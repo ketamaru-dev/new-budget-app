@@ -4,10 +4,10 @@ import json
 def load_file(budget, file_name='budget', file_path='.'):
     try:
         with open(f'{file_path}\\{file_name}.json', 'w') as file:
-            json.dump(budget, file)
+            json.dump(budget, file, indent=4)
             print('Файл записан')
         return 1
-    except (FileNotFoundError, json.decode.JSONDecodeError):
+    except (FileNotFoundError):
         print('FILE ERROR!')
         return 0
     finally:
@@ -38,7 +38,7 @@ def read_file(file_name='budget', file_path='.'):
         with open(f'{file_path}\\{file_name}.json', 'r') as file:
             budget = json.load(file)
         return budget
-    except (FileNotFoundError, json.decode.JSONDecodeError):
+    except (FileNotFoundError):
         print('FILE ERROR!')
         return {}
 
