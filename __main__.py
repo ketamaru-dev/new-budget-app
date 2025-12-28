@@ -1,10 +1,13 @@
+from . import create, category, create
+import json
+
 def show(budget: list):  #Выводим все категории и траты
     print('Категория'.rjust(30) + 'Лимит по категории'.rjust(30) + 'Траты'.rjust(30))
     print('_' * 90)
     ctgs = dict(enumerate(budget))
     for key in ctgs:
         ctg = ctgs[key].pack_to_save()
-        print(ctg['category_name'].rjust(30) + ctg['limit'].rjust(30), end='')
+        print(ctg['category_name'].rjust(30) + str(ctg['limit']).rjust(30), end='')
         for date in ctg['transactions']:
             print(ctg['transactions'][date].rjust(30))
             print(' ' * 60, end='')
@@ -61,10 +64,10 @@ def change_limit(budget:list):
     pass
 
 def exit(budget:list):
-    budget_app.load_file(budget)
+    create.load_file(budget)
     raise StopIteration
 
-def control_panel(budget):
+def control_panel(budget: list):
     print('Welcome to budget app')
     show_actions = {
                         1: 'Показать всё',
@@ -88,5 +91,4 @@ def control_panel(budget):
         
 
 if __name__ == '__main__':
-    budget_app = __import__(__package__)
-    control_panel(budget_app.budget_file)
+    control_panel(create.unpack_json(create.read_file()))

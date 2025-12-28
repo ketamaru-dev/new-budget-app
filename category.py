@@ -1,11 +1,11 @@
 class Category:
     
-    def __init__(self, name_of_cat: str, cat_limit: float):
+    def __init__(self, name_of_cat: str, cat_limit: float, transactions: dict={}):
         self.name_of_cat = name_of_cat
         self.cat_limit = cat_limit
 
         #Создаем словарь транзакции key = date, value = summ
-        self.transactions = {}
+        self.transactions = transactions
 
     def check_limit(self):  #this method is check if limit is out
         total_amount = self.count_total()
@@ -28,17 +28,18 @@ class Category:
             if date == '':
                 from datetime import datetime
                 date = datetime.now().strftime("%Y-%m-%d")
-            new_transaction = Transaction(summ, date)
-            self.transactions[date] = new_transaction
+            new_transaction = (date, summ)
+            self.transactions[date] = summ
             self.check_limit()
 
-    def pack_to_save(self):
+    def pack_to_save(self) -> dict:
         packed_category = {
-            'category name': self.name_of_cat,
+            'category_name': self.name_of_cat,
             'limit': self.cat_limit,
             'transactions': self.transactions
         }
         return packed_category
+    
 
     def get_all_transactions(self):
         category_transaction = []
@@ -56,17 +57,3 @@ class Category:
     def rm_transaction(self, date:str):
         del self.transactions[date]
         print('Транзакция удалена')
-
-    
-class Transaction:
-
-    def __init__(self, amount_of_transaction: float, date_of_transaction: str):
-        self.amount_of_transaction = amount_of_transaction
-        self.date_of_transaction = date_of_transaction
-        
-    def get_amount(self):
-        return self.amount_of_transaction
-
-    def get_transaction(self):
-        return (self.date_of_transaction, self.amount_of_transaction)
-    

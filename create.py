@@ -1,4 +1,4 @@
-import category
+from . import category
 import json
 
 def load_file(budget, file_name='budget', file_path='.'):
@@ -33,6 +33,27 @@ def create_categories():
                 break
     return categories            
 
+def read_file(file_name='budget', file_path='.'):
+    try:
+        with open(f'{file_path}\\{file_name}.json', 'r') as file:
+            budget = json.load(file)
+        return budget
+    except (FileNotFoundError, json.decode.JSONDecodeError):
+        print('FILE ERROR!')
+        return {}
+
+def pack_to_json(categories: list) -> dict:
+    ctgs = [ctg.pack_to_save() for ctg in categories]
+    return {
+        'categories': ctgs,
+        'amount': len(ctgs)
+           }
+
+def unpack_json(ctg: dict) -> list:
+    categories = [category.Category(cat['category_name'], cat['limit'], cat['transactions']) for cat in ctg['categories']]
+    return categories
+
 def fill_file():
     categories = create_categories()
-    load_file(categories)
+    load_file(pack_to_json(categories))
+    return pack_to_json(categories)
